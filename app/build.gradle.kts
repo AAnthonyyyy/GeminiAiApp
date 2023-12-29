@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
       id("com.android.application")
       id("org.jetbrains.kotlin.android")
@@ -27,6 +29,12 @@ android {
                         getDefaultProguardFile("proguard-android-optimize.txt"),
                         "proguard-rules.pro"
                   )
+            }
+            debug {
+                  val p = Properties()
+                  p.load(project.rootProject.file("local.properties").reader())
+                  val apiKey: String = p.getProperty("apiKey")
+                  buildConfigField("String", "apiKey", "\"$apiKey\"")
             }
       }
       compileOptions {
@@ -70,6 +78,7 @@ dependencies {
 
       // Compose
       implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+      implementation("androidx.compose.material:material-icons-extended:1.5.4")
       // Gemini AI SDK
       implementation("com.google.ai.client.generativeai:generativeai:0.1.1")
       // Coil
