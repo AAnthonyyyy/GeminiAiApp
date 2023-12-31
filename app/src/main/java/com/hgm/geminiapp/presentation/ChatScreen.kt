@@ -101,14 +101,10 @@ fun ChatScreen(
                               },
                               modifier = Modifier.weight(1f)
                         )
-                        if (state.isLoading){
-                              CircularProgressIndicator()
-                        }else{
-                              IconButton(onClick = {
-                                    onSendMessage(question)
-                              }) {
-                                    Icon(imageVector = Icons.Default.Send, contentDescription = null)
-                              }
+                        IconButton(onClick = {
+                              onSendMessage(question)
+                        }) {
+                              Icon(imageVector = Icons.Default.Send, contentDescription = null)
                         }
                   }
             }

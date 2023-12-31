@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +19,8 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -53,27 +56,71 @@ fun ChatMessage(
             mutableStateOf(false)
       }
 
-      Column(
-            modifier = modifier
-                  .clip(
-                        RoundedCornerShape(
-                              topStart = if (message.isFromLocal) roundedCornerSize else 0.dp,
-                              topEnd = roundedCornerSize,
-                              bottomStart = roundedCornerSize,
-                              bottomEnd = if (message.isFromLocal) 0.dp else roundedCornerSize
-                        )
-                  )
-                  .background(if (message.isFromLocal) OldRose else Vanilla)
-                  .clickable { expandedState = !expandedState }
-                  .animateContentSize()
-                  .padding(16.dp)
+
+      Row(
+            modifier = modifier,
+            verticalAlignment = Alignment.CenterVertically
       ) {
-            Text(
-                  text = message.content,
-                  fontSize = 16.sp,
-                  color = Color.Black,
-                  modifier = Modifier.widthIn(max = 270.dp),
-                  maxLines = if (expandedState) 2 else Int.MAX_VALUE
-            )
+            if (message.isFromLocal) {
+                  Column(
+                        modifier = modifier
+                              .clip(
+                                    RoundedCornerShape(
+                                          topStart = roundedCornerSize,
+                                          topEnd = roundedCornerSize,
+                                          bottomStart = roundedCornerSize,
+                                          bottomEnd = 2.dp
+                                    )
+                              )
+                              .background(OldRose)
+                              .clickable { expandedState = !expandedState }
+                              .animateContentSize()
+                              .padding(16.dp)
+                  ) {
+                        Text(
+                              text = message.content,
+                              fontSize = 16.sp,
+                              color = Color.Black,
+                              modifier = Modifier.widthIn(max = 270.dp),
+                              maxLines = if (expandedState) 2 else Int.MAX_VALUE
+                        )
+                  }
+
+                  Icon(
+                        imageVector = Icons.Default.SupervisedUserCircle,
+                        contentDescription = null,
+                        Modifier.size(40.dp)
+                  )
+            } else {
+                  Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null,
+                        Modifier.size(40.dp)
+                  )
+
+                  Column(
+                        modifier = modifier
+                              .clip(
+                                    RoundedCornerShape(
+                                          topStart = 2.dp,
+                                          topEnd = roundedCornerSize,
+                                          bottomStart = roundedCornerSize,
+                                          bottomEnd = roundedCornerSize
+                                    )
+                              )
+                              .background(Vanilla)
+                              .clickable { expandedState = !expandedState }
+                              .animateContentSize()
+                              .padding(16.dp)
+                  ) {
+                        Text(
+                              text = message.content,
+                              fontSize = 16.sp,
+                              color = Color.Black,
+                              modifier = Modifier.widthIn(max = 270.dp),
+                              maxLines = if (expandedState) 2 else Int.MAX_VALUE
+                        )
+                  }
+            }
       }
 }
